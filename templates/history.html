@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block the_body %}
+<h2>Here is the log history</h2>
+
+<table border="1">
+    <tr>
+        <th>Timestamp</th>
+        <th>Pattern</th>
+        <th># of Matches</th>
+    </tr>
+
+    {% for row in data_table %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

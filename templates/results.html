@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block the_body %}
+<h2>Here are the xword matches!</h2>
+
+<ul>
+    {% for res in the_results %}
+        <li>{{ res }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
