@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block the_body %}
+    <h2>Welcome to Word Game 4 on the Web</h2>
+
+    <p><strong>How to play...</strong></p>
+
+    <p>You are provided with a word of eight letters or more which we'll call the "sourceword".</p>
+
+    <p>You are to think up seven 4-or-more letter words made up from the letters contained within the sourceword, ensuring that:</p>
+
+    <ol>
+        <li>Each word is only made up from the letters contained within the sourceword.</li>
+        <li>You haven't reused any letter more times that it appears in the sourceword.</li>
+        <li>Each word exists within the dictionary (i.e., it's a “real” word).</li>
+        <li>The words all have four letters or more.</li>
+        <li>There are no duplicate words.</li>
+        <li>None of the seven words is the source word.</li>
+    </ol>
+
+    <strong>Note</strong>: case is NOT significiant (i.e., This, THIS, and this are the *same* word).
+    <br>
+
+    <a href="/startgame"><button>Let's play!</button></a>
+
+    <p>See the Top 10 Leaderboard <a href="/top10">here</a>.</p>
+{% endblock %}

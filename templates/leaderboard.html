@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block the_body %}
+    <p>Here's the top ten scores:</p>
+
+    <table id="leaderboard">
+        <tr><th>Position</th><th>Time</th><th>Who</th><th>Sourceword</th><th>Matches</th></tr>
+        {% for row in data_table %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/startgame"><button>Play?</button></a>
+
+    <a href="/rules"><button>Review the rules</button></a>
+
+{% endblock %}

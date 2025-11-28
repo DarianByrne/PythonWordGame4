@@ -29,8 +29,8 @@ def add_to_database(t, w, s, m):
 
 def get_leaderboard_data():
     SQL = f"""
-        select *
-        from leaderboard
+        select ROW_NUMBER() OVER (order by time), l.*
+        from leaderboard l
         order by time asc
     """
     with DBcm.UseDatabase(creds) as db:
