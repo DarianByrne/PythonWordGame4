@@ -32,6 +32,7 @@ def get_leaderboard_data():
         select ROW_NUMBER() OVER (order by time), l.*
         from leaderboard l
         order by time asc
+        limit 10
     """
     with DBcm.UseDatabase(creds) as db:
         db.execute(SQL)

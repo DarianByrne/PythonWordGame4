@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 
+import time
 import model
+import wordgame4
 
 app = Flask(__name__)
+app.secret_key = "hellothisisarandomsecretkeythatcanneverbecrackedbecauseisaidsoandyoushouldneveruseitinproduction"
 
 @app.get("/")
 @app.get("/rules")
@@ -14,7 +17,9 @@ def opening_page():
 
 @app.get("/startgame")
 def game():
-    sourceword = ""
+    sourceword = wordgame4.pick_sourceword()
+    session["sourceword"] = sourceword
+    session["starttime"] = time.time()
 
     return render_template(
         "game.html",
@@ -34,14 +39,19 @@ def leaderboard():
 @app.post("/processwords")
 def get_the_results():
     ans = request.form["answer"]
-    results = []
-    time = 0.0
+    session["ans"] = ans
+    sourceword = session["sourceword"]
+    results = wordgame4.is_valid(sourceword, ans)
+    starttime = session["starttime"]
+    endtime = time.time()
+    length = endtime - starttime
+    session["length"] = length
 
     if not results:
         return render_template(
             "win.html",
             the_title="You're a winner!",
-            the_time=time,
+            the_time=length,
             the_ans=ans
         )
     else:
@@ -53,7 +63,12 @@ def get_the_results():
 
 @app.post("/processhighscore")
 def record_high_score():
-    name = request.form["username"]
+    who = request.form["username"]
+    sourceword = session["sourceword"]
+    length = session["length"]
+    ans = session["ans"].split(" ")
+    matches = ", ".join(ans)
+    model.add_to_database(length, who, sourceword, matches)
     data = model.get_leaderboard_data()
     position = 0
     players = 0
