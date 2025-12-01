@@ -30,11 +30,11 @@ def game():
 
 @app.get("/top10")
 def leaderboard():
-    data = model.get_leaderboard_data()
+    data = model.get_leaderboard_data(limit_10=True)
     return render_template(
         "leaderboard.html",
         the_title="The top ten scores",
-        data_table=data[:10]
+        data_table=data
     )
 
 @app.post("/processwords")
@@ -70,7 +70,7 @@ def record_high_score():
     ans = session["ans"].split(" ")
     matches = ", ".join(ans)
     model.add_to_database(length, who, sourceword, matches)
-    data = model.get_leaderboard_data()
+    data = model.get_leaderboard_data(limit_10=False)
 
     t = Decimal(length).quantize(Decimal('.01'))
     # https://www.geeksforgeeks.org/python/python-find-the-tuples-containing-the-given-element-from-a-list-of-tuples/

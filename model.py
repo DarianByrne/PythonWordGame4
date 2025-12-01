@@ -27,11 +27,12 @@ def add_to_database(t, w, s, m):
     with DBcm.UseDatabase(creds) as db:
         db.execute(SQL, (t, w, s, m))
 
-def get_leaderboard_data():
+def get_leaderboard_data(limit_10 = False):
     SQL = f"""
         select ROW_NUMBER() OVER (order by time), l.*
         from leaderboard l
         order by time asc
+        {"limit 10" if limit_10 else ""}
     """
     with DBcm.UseDatabase(creds) as db:
         db.execute(SQL)
