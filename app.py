@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session
 
+from decimal import Decimal
 import time
 import model
 import wordgame4
@@ -70,15 +71,18 @@ def record_high_score():
     matches = ", ".join(ans)
     model.add_to_database(length, who, sourceword, matches)
     data = model.get_leaderboard_data()
-    position = 0
-    players = 0
+
+    t = Decimal(length).quantize(Decimal('.01'))
+    # https://www.geeksforgeeks.org/python/python-find-the-tuples-containing-the-given-element-from-a-list-of-tuples/
+    position = [tup for tup in data if who in tup and t in tup][0][0]
+    players = len(data)
 
     return render_template(
         "postwin.html",
         the_title="How did you do?",
         the_position=position,
         the_players=players,
-        data_table=data
+        data_table=data[:10]
     )
 
 if __name__ == "__main__":
