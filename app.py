@@ -34,7 +34,7 @@ def leaderboard():
     return render_template(
         "leaderboard.html",
         the_title="The top ten scores",
-        data_table=data
+        data_table=data[:10]
     )
 
 @app.post("/processwords")
