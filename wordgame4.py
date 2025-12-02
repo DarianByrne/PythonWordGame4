@@ -22,29 +22,25 @@ def is_valid(sourceword, ans):
     if len(answers) != 7:
         reasons.append(f"only {len(answers)} words, not 7 words")
 
-    # The words all have four letters or more
     for answer in answers:
+        # The words all have four letters or more
         if len(answer) < 4:
             reasons.append(f"{answer} is less than 4 letters long")
 
-    # Each word exists within the dictionary (i.e., it's a “real” word).
-    for answer in answers:
+        # Each word exists within the dictionary (i.e., it's a “real” word).
         if answer not in words:
             reasons.append(f"{answer} is not a real word")
 
-    for answer in answers:
         # Each word is only made up from the letters contained within the sourceword.
         # You haven't reused any letter more times that it appears in the sourceword.
         if c:= Counter(answer) - Counter(sourceword):
             reasons.append(f"{answer} uses these invalid letters: {", ".join(list(c))}")
 
-    # There are no duplicate words
-    for answer in answers:
+        # There are no duplicate words
         if answers.count(answer) > 1:
             reasons.append(f"{answer} is duplicated")
 
-    # None of the seven words is the source word
-    for answer in answers:
+        # None of the seven words is the source word
         if answer == sourceword:
             reasons.append(f"{answer} is the source word")
 
