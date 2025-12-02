@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 
 from decimal import Decimal
 import time
@@ -64,12 +64,16 @@ def get_the_results():
 
 @app.post("/processhighscore")
 def record_high_score():
+    # uses get method as recorded may not be set, defaults to False
+    if session.get("recorded", False):
+        return redirect("/")
     who = request.form["username"]
     sourceword = session["sourceword"]
     length = session["length"]
     ans = session["ans"].split(" ")
     matches = ", ".join(ans)
     model.add_to_database(length, who, sourceword, matches)
+    session["recorded"] = True
     data = model.get_leaderboard_data(limit_10=False)
 
     t = Decimal(length).quantize(Decimal('.01'))
