@@ -11,7 +11,12 @@ def pick_sourceword():
     return random.choice(sourcewords)
 
 def is_valid(sourceword, ans):
-    answers = ans.lower().split(" ")  # lowercase to ignore case
+    # lowercase to ignore case
+    # strip to remove extra punctuation/user errors
+    # nested list comprehension because we want to sanitise before testing
+    # only include answers that aren't empty strings or just spaces
+    # https://stackoverflow.com/a/4071407
+    answers = [a for a in [x.strip(",.").lower() for x in ans.split(" ")] if a and not a.isspace()]
     reasons = []
     # seven 4-or-more letter words
     if len(answers) != 7:
