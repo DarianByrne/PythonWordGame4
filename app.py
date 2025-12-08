@@ -6,7 +6,7 @@ import model
 import wordgame4
 
 app = Flask(__name__)
-app.secret_key = "hellothisisarandomsecretkeythatcanneverbecrackedbecauseisaidsoandyoushouldneveruseitinproduction"
+app.secret_key = "fiftieth-monetary-both-rejoin-strained-stimuli-punctual-rearview-embattled-stretch-unroasted-treat-amuck-lather-unpaved-fidgety"
 
 @app.get("/")
 @app.get("/rules")
@@ -46,13 +46,14 @@ def get_the_results():
     starttime = session["starttime"]
     endtime = time.time()
     length = endtime - starttime
+    t = Decimal(length).quantize(Decimal('.01'))
     session["length"] = length
 
     if not results:
         return render_template(
             "win.html",
             the_title="You're a winner!",
-            the_time=length,
+            the_time=t,
             the_ans=ans
         )
     else:
@@ -64,16 +65,18 @@ def get_the_results():
 
 @app.post("/processhighscore")
 def record_high_score():
+    # this code can be used to stop the user from recording themselves into the database multiple times
+    # it is commented out because it's not part of the spec
     # uses get method as recorded may not be set, defaults to False
-    if session.get("recorded", False):
-        return redirect("/")
+    # if session.get("recorded", False):
+    #     return redirect("/")
     who = request.form["username"]
     sourceword = session["sourceword"]
     length = session["length"]
     ans = session["ans"].split(" ")
     matches = ", ".join(ans)
     model.add_to_database(length, who, sourceword, matches)
-    session["recorded"] = True
+    # session["recorded"] = True
     data = model.get_leaderboard_data(limit_10=False)
 
     t = Decimal(length).quantize(Decimal('.01'))
