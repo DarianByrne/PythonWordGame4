@@ -1,3 +1,7 @@
+# Darian Byrne
+# C00296036
+# 09/12/2025
+
 from flask import Flask, render_template, request, session, redirect
 
 from decimal import Decimal
